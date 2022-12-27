@@ -1,0 +1,60 @@
+﻿@model WebBookk.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+<img src="@Html.DisplayFor(model => model.ImageDescription)" style="width: 100%; margin-left: -200px; height: 85.5%; opacity: 0.5; position: fixed;" />
+
+<h1 style="opacity: 0.99;" >Details</h1>
+<div style="opacity: 0.99; margin-top: 80px;">
+    <h4>Book</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            <img src="@Url.Content("~/images/" + Model.BookFileName)" style="width:150%; height:100%;" />
+        </dt>
+
+        <dd class="col-sm-10" style="padding-left: 115px;">
+            <h1>
+               @Html.DisplayFor(model => model.Title)
+            </h1>
+            <br>
+            <h3>
+               @Html.DisplayFor(model => model.ReleaseDate)
+            </h3>
+            <br>
+            <h4>
+               @Html.DisplayFor(model => model.Genre)
+            </h4>
+            <br>
+            <h5>
+               @Html.DisplayFor(model => model.Description)
+            </h5>
+            <br>
+            <h5>
+               Available: @Html.DisplayFor(model => model.Qty)
+            </h5>
+            <br>
+            <a style="color:red;">Price:</a>  $@Html.DisplayFor(model => model.Price)
+        </dd>
+ 
+        <dd class="col-sm-10">
+            <br>
+           <a class="btn btn-primary" asp-action="Index">
+                <button type="button" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                    </svg>
+                    Back to home
+                </button>
+            </a>
+        </dd>
+        
+
+    </dl>
+</div>
+
+
+
+
+

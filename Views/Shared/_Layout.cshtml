@@ -1,0 +1,190 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@using Newtonsoft.Json
+@{
+    var data = Context.Session.GetString("cart");
+ 
+    int coutCart = 0;
+    if (data == null)
+    {
+        coutCart = 0;
+    }
+    else
+    {
+        var data2 = Context.Session.GetString("cart");
+        List<CartItem> dataCart = JsonConvert.DeserializeObject<List<CartItem>>(data2);
+        foreach (var item in dataCart)
+        {
+            coutCart += item.Qty;
+        }
+ 
+    }
+ 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebBook</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebBook.styles.css" asp-append-version="true" />
+    <style>
+    body {
+  margin: 0;
+}
+
+/* dd container */
+.dropdown {
+  display: inline-block;
+  position: relative;
+  outline: none;
+  margin: 10px;
+}
+
+/* button */
+.dropbtn {
+  padding: 12px 16px;
+  color: white;
+  cursor: pointer;
+  transition: 0.35s ease-out;
+}
+
+/* dd content */
+.dropdown .dropdown-content {
+  position: absolute;
+  background-color: #f7f7f7;
+  min-width: 100%;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 100000;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.35s ease-out;
+  border-radius:5px;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+  text-decoration: none;
+  transition: 0.35s ease-out;
+}
+.dropdown-content a:hover {
+  background-color: #eaeaea;
+}
+
+/* show dd content */
+.dropdown:focus .dropdown-content {
+  outline: none;
+  transform: translateY(20px);
+  visibility: visible;
+  opacity: 1;
+}
+.dropbtn:hover, .dropdown:focus .dropbtn {
+  background-color: #691692;
+  border-radius:5px;
+  color:whitesmoke;
+}
+
+/* mask to close menu by clicking on the button */
+.dropdown .db2 {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0; opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+}
+.dropdown:focus .db2 {
+  display: inline-block;
+}
+.dropdown .db2:focus .dropdown-content {
+  outline: none;
+  visibility: hidden;
+  opacity: 0;
+}
+</style>
+</head>
+<body style="background-color:#081826;">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid" style="background-color: #081826; margin-bottom: -25px; margin-top: -10px;">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/logo/Logo123.png" style="width:125px;"/>
+                </a>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+         @*
+                        <li class="nav-item" style="color: whitesmoke;">
+                            <partial name="Category_nav" />
+                        </li>
+                        User.Identity.IsAuthenticated && User.IsInRole("Admin")
+         *@
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Book" asp-action="Index">Book Manager</a>
+                            </li>
+                            <li class="nav-item">
+                                <form class="form search" asp-controller="Home" asp-action="Search" style="display: inline-flex; height: 40px; margin-left: 350px;">
+                                        <input type="Search" id="Search" name="Search" placeholder="Search..." style="width: 350px; background-color: #081826; border-radius: 0px; border-color: tan; text-align: left; color: whitesmoke; border-top: 100px; border-left: 100px; border-right: 100px;" />
+                                </form>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="whitesmoke" class="bi bi-search" viewBox="0 0 16 16" style="margin-left: -25px;">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </li>
+                        } else{
+                        <li class="nav-item">
+                        <form class="form search" asp-controller="Home" asp-action="Search" style="display: inline-flex; height: 40px; margin-left: 450px;">
+                                <input type="Search" id="Search" name="Search" placeholder="Search..." style="width: 350px; background-color: #081826; border-radius: 0px; border-color: tan; text-align: left; color: whitesmoke; border-top: 100px; border-left: 100px; border-right: 100px;" />
+                        </form>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="whitesmoke" class="bi bi-search" viewBox="0 0 16 16" style="margin-left: -25px;">
+                              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                          </svg>
+                        </li>
+                        }
+                        <li class="nav-item" style="margin-left: 250px;">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Cart">
+                                    <button type="button" class="btn btn-success" style="width: 70px; height: 50px; margin-top:-10px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                        </svg>
+                                    </button>
+                                    <p style="background-color: red; color: white; opacity: 0.99; width: 25px; text-align: center; border-radius: 15px; margin-top: -60px; margin-left: 55px;">
+                                       @coutCart
+                                    </p>
+                                </a>
+
+                        </li>                      
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1" @*style="margin-left:400px;"*@ >
+                         <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container" style="color:whitesmoke;margin-bottom: 50px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted" style="margin-top:250px;">
+        <div class="container">
+            &copy; 2022 - Lession_1 - <a >Bui Duc Canh</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

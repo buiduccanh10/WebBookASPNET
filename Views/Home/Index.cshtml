@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model WebBookk.Models.ProductModel
+
+<div class="text-center">
+    <br />
+    <h2 class="display-4" style="color: burlywood; font-family: American Typewriter;">Top Book</h2>
+    <div class="text-center" style="border-style: double; border-radius: 10px; padding: 5px 5px; width: 800px; display: inline-block; margin: 15px 15px;">
+      @foreach (var item in Model.cat)
+    {
+        <a asp-action="GetCategory" asp-route-id="@item.CategoryId">
+            <button class="btn btn-outline-danger">
+               @Html.DisplayFor(modelItem => item.CategoryName)
+            </button>
+        </a>
+    }
+    </div>
+    <br />
+  
+        <tbody>
+            @foreach (var item in Model.book)
+            {
+                <div class="grid columns is-mobile is-multiline is-variable is-2" style="display:inline-block; padding: 20px;" >
+                    <div class="column is-one-fifth-fullhd is-one-quarter-desktop is-one-third-tablet is-half-mobile">
+                        <a asp-action="Details" asp-route-id="@item.Id">
+                           <img src="@Url.Content("~/images/"+item.BookFileName)" style="width: 220px; border-radius: 10px; height: 320px; margin-bottom: 10px;" />
+                        </a>
+                        <h4 class="name vi" style="text-align:left;">
+               
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </h4>
+                        <h6
+                        style="white-space: nowrap; width: 200px; overflow: hidden; text-overflow: ellipsis;">
+                         
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </h6>
+                        <p class="qty vi" style="text-align:left;">
+                           Available: 
+                           @Html.DisplayFor(modelItem => item.Qty)
+                        </p>
+                        <h3 class="price vi" style="text-align: left; color: darkgoldenrod;">
+                            <a>$</a> 
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </h3>
+                        <br>
+                            <a asp-action="AddCart" asp-controller="Home" asp-route-id="@item.Id">
+                            <button class="btn btn-success" style="height: 50px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                        </svg>
+                              Add to cart
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            }
+        </tbody>
+</div>
+
